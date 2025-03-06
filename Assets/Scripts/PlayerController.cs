@@ -5,18 +5,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
 
-
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(CircleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
-    private PlayerSpawn _playerSpawn;
-
     private void Awake()
     {
-        _playerSpawn = FindFirstObjectByType<PlayerSpawn>();
-
-        _playerSpawn.playerRb = GetComponent<Rigidbody2D>();
-        _playerSpawn.playerAlive.Value = true;
+        PlayerSpawn.Instance.playerRb = GetComponent<Rigidbody2D>();
+        PlayerSpawn.Instance.playerAlive.Value = true;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -24,7 +19,7 @@ public class PlayerController : MonoBehaviour
         //if other has tag kill, destroy self
         if (other.gameObject.CompareTag("Kill"))
         {
-            _playerSpawn.playerAlive.Value = false;
+            PlayerSpawn.Instance.playerAlive.Value = false;
             Destroy(gameObject);
         }
     }
