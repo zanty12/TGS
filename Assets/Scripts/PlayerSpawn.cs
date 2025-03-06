@@ -12,26 +12,26 @@ public class PlayerSpawn : MonoBehaviour
 {
     private Camera _camera; //マウスのワールド位置取るためカメラの参照をとっとく
     private bool _shot = false; //発射後操作を一旦中止の判定用
-    [DoNotSerialize] public Rigidbody2D playerRb; //プレイヤー発射のためのRigidbody参照
+    [NonSerialized] public Rigidbody2D PlayerRb; //プレイヤー発射のためのRigidbody参照
     public static PlayerSpawn Instance { get; private set; } //シングルトン
 
-    [SerializeField, Required, TabGroup("参照")]
+    [Required, SerializeField, BoxGroup("参照")]
     private GameObject playerPrefab;
 
-    [Required, SerializeField, TabGroup("参照")]
+    [Required, SerializeField, BoxGroup("参照")]
     private Image aimCursor; //マウスの場所のカーソル
 
-    [Required, SerializeField, TabGroup("参照")]
+    [Required, SerializeField, BoxGroup("参照")]
     private LineRenderer aimLine; //予測線
 
-    [SerializeField, Range(0.1f, 0.3f), TabGroup("数値")]
+    [SerializeField, Range(0.1f, 0.3f), BoxGroup("数値")]
     private float lineWidth = 0.3f; //予測線の太さ
 
-    [SerializeField, Range(5, 20), TabGroup("数値")]
+    [SerializeField, Range(5, 20), BoxGroup("数値")]
     private float launchSpeed = 5f; //プレイヤーの発射速度
 
     //プレイヤーの状態を監視するReactiveProperty
-    public ReactiveProperty<bool> playerAlive = new ReactiveProperty<bool>(true);
+    [NonSerialized] public ReactiveProperty<bool> PlayerAlive = new ReactiveProperty<bool>(true);
 
     private void Awake()
     {
@@ -51,7 +51,7 @@ public class PlayerSpawn : MonoBehaviour
         aimLine.enabled = true;
 
         //プレイヤーが死んだら生成する
-        playerAlive.Where(_ => playerAlive.Value == false).Subscribe(_ => SpawnPlayer()).AddTo(this);
+        PlayerAlive.Where(_ => PlayerAlive.Value == false).Subscribe(_ => SpawnPlayer()).AddTo(this);
         //まだ発射していない状態だったら予測線とカーソルの処理する
         Observable.EveryUpdate().Where(_ => !_shot).Subscribe(_ => Aim()).AddTo(this);
         //マウス左クリックしたら発射
@@ -100,7 +100,7 @@ public class PlayerSpawn : MonoBehaviour
     private void Shoot()
     {
         //プレイヤーを発射
-        playerRb.linearVelocity =
+        PlayerRb.linearVelocity =
             (Vector2)(_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * launchSpeed;
         _shot = true;
         //カーソルと予測線を消す

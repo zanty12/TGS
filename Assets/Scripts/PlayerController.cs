@@ -10,8 +10,8 @@ public class PlayerController : MonoBehaviour
 {
     private void Awake()
     {
-        PlayerSpawn.Instance.playerRb = GetComponent<Rigidbody2D>();
-        PlayerSpawn.Instance.playerAlive.Value = true;
+        PlayerSpawn.Instance.PlayerRb = GetComponent<Rigidbody2D>();
+        PlayerSpawn.Instance.PlayerAlive.Value = true;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
         //if other has tag kill, destroy self
         if (other.gameObject.CompareTag("Kill"))
         {
-            PlayerSpawn.Instance.playerAlive.Value = false;
+            PlayerSpawn.Instance.PlayerAlive.Value = false;
             Destroy(gameObject);
         }
     }
