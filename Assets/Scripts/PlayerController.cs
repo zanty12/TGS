@@ -8,18 +8,17 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(CircleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
-    private void Awake()
+    private void Start()
     {
-        PlayerSpawn.Instance.PlayerRb = GetComponent<Rigidbody2D>();
-        PlayerSpawn.Instance.PlayerAlive.Value = true;
+        PlayerSpawn.Instance.PlayersAlive.Value += 1;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        //ShotHistory.Instance.AddPoint(other.contacts[0].point);
         //if other has tag kill, destroy self
         if (other.gameObject.CompareTag("Kill"))
         {
-            PlayerSpawn.Instance.PlayerAlive.Value = false;
             Destroy(gameObject);
         }
     }
@@ -30,5 +29,10 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("You Win!");
         }
+    }
+
+    private void OnDestroy()
+    {
+        PlayerSpawn.Instance.PlayersAlive.Value -= 1;
     }
 }

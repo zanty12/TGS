@@ -11,8 +11,10 @@ using UnityEngine.UI;
 public class PlayerSpawn : MonoBehaviour
 {
     private Camera _camera; //マウスのワールド位置取るためカメラの参照をとっとく
+
     private bool _shot = false; //発射後操作を一旦中止の判定用
-    [NonSerialized] public Rigidbody2D PlayerRb; //プレイヤー発射のためのRigidbody参照
+
+    private Rigidbody2D _playerRb; //プレイヤー発射のためのRigidbody参照
     public static PlayerSpawn Instance { get; private set; } //シングルトン
 
     [Required, SerializeField, BoxGroup("参照")]
@@ -31,7 +33,7 @@ public class PlayerSpawn : MonoBehaviour
     private float launchSpeed = 5f; //プレイヤーの発射速度
 
     //プレイヤーの状態を監視するReactiveProperty
-    [NonSerialized] public ReactiveProperty<bool> PlayerAlive = new ReactiveProperty<bool>(true);
+    [NonSerialized] public ReactiveProperty<int> PlayersAlive = new ReactiveProperty<int>(0);
 
     private void Awake()
     {
@@ -51,7 +53,7 @@ public class PlayerSpawn : MonoBehaviour
         aimLine.enabled = true;
 
         //プレイヤーが死んだら生成する
-        PlayerAlive.Where(_ => PlayerAlive.Value == false).Subscribe(_ => SpawnPlayer()).AddTo(this);
+        PlayersAlive.Where(_ => PlayersAlive.Value == 0).Subscribe(_ => SpawnPlayer()).AddTo(this);
         //まだ発射していない状態だったら予測線とカーソルの処理する
         Observable.EveryUpdate().Where(_ => !_shot).Subscribe(_ => Aim()).AddTo(this);
         //マウス左クリックしたら発射
@@ -61,12 +63,14 @@ public class PlayerSpawn : MonoBehaviour
     private void SpawnPlayer()
     {
         //自分の場所にプレイヤー生成
-        Instantiate(playerPrefab, transform.position, Quaternion.identity);
+        _playerRb = Instantiate(playerPrefab, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
         //プレイヤーが死んだらfalseになるからリセット
         aimCursor.enabled = true;
         aimLine.enabled = true;
         //まだ発射してない
         _shot = false;
+        //前回の線表示
+        //ShotHistory.Instance.DrawHistory();
     }
 
     private void Aim()
@@ -100,11 +104,12 @@ public class PlayerSpawn : MonoBehaviour
     private void Shoot()
     {
         //プレイヤーを発射
-        PlayerRb.linearVelocity =
+        _playerRb.linearVelocity =
             (Vector2)(_camera.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * launchSpeed;
         _shot = true;
         //カーソルと予測線を消す
         aimCursor.enabled = false;
         aimLine.enabled = false;
+        //ShotHistory.Instance.ClearHistory();
     }
 }
