@@ -1,9 +1,7 @@
 using System;
 using Sirenix.OdinInspector;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 //スポーンと呼んでるけど実質こっちがプレイヤーでしょ
@@ -55,13 +53,19 @@ public class PlayerSpawn : MonoBehaviour
         //プレイヤーが死んだら生成する
         PlayersAlive.Where(_ => PlayersAlive.Value == 0).Subscribe(_ => SpawnPlayer()).AddTo(this);
         //まだ発射していない状態だったら予測線とカーソルの処理する
-        Observable.EveryUpdate().Where(_ => !_shot).Subscribe(_ => Aim()).AddTo(this);
+        Observable.EveryUpdate().Where(_ => !_shot && GameManager.Instance.gameState == GameState.Shoot)
+            .Subscribe(_ => Aim()).AddTo(this);
         //マウス左クリックしたら発射
-        Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0) && !_shot).Subscribe(_ => Shoot()).AddTo(this);
+        Observable.EveryUpdate()
+            .Where(_ => Input.GetMouseButtonDown(0) && !_shot && GameManager.Instance.gameState == GameState.Shoot)
+            .Subscribe(_ => Shoot()).AddTo(this);
     }
 
     private void SpawnPlayer()
     {
+        //前回の線表示
+        ShotHistoryManager.Instance.SaveShotHistory();
+        ShotHistoryManager.Instance.DrawHistory();
         //自分の場所にプレイヤー生成
         _playerRb = Instantiate(playerPrefab, transform.position, Quaternion.identity).GetComponent<Rigidbody2D>();
         //プレイヤーが死んだらfalseになるからリセット
@@ -69,8 +73,6 @@ public class PlayerSpawn : MonoBehaviour
         aimLine.enabled = true;
         //まだ発射してない
         _shot = false;
-        //前回の線表示
-        //ShotHistory.Instance.DrawHistory();
     }
 
     private void Aim()
@@ -110,6 +112,6 @@ public class PlayerSpawn : MonoBehaviour
         //カーソルと予測線を消す
         aimCursor.enabled = false;
         aimLine.enabled = false;
-        //ShotHistory.Instance.ClearHistory();
+        ShotHistoryManager.Instance.ClearShotHistory();
     }
 }

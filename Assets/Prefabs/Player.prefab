@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5646362292166748916}
   - component: {fileID: 7441530363802789985}
   - component: {fileID: 7074117016288737386}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4847,7 +4847,7 @@ GameObject:
   - component: {fileID: 2529194389654733674}
   - component: {fileID: 2602847874203778701}
   - component: {fileID: 989196019407410439}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4937,7 +4937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawn: {fileID: 0}
+  colorState: 6
 --- !u!50 &2602847874203778701
 Rigidbody2D:
   serializedVersion: 5
@@ -4981,7 +4981,7 @@ CircleCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
