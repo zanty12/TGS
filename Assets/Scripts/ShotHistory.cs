@@ -19,6 +19,8 @@ public class ShotHistory : MonoBehaviour
 
     public void DrawHistory()
     {
+        //clear the line renderer
+        _lineRenderer.positionCount = 0;
         _lineRenderer.positionCount = shotHistory.Count;
         _lineRenderer.startWidth = lineWidth;
         _lineRenderer.endWidth = lineWidth;
@@ -26,5 +28,11 @@ public class ShotHistory : MonoBehaviour
         {
             _lineRenderer.SetPosition(i, shotHistory[i]);
         }
+    }
+
+    public void ClearHistory()
+    {
+        shotHistory.Clear();
+        _lineRenderer.positionCount = 0;
     }
 }
