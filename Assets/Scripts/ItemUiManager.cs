@@ -10,8 +10,4 @@ public class ItemUiManager : MonoBehaviour
     {
         Instantiate(gameObject, parent.transform);
     }
-
-    public void SetItem()
-    {
-    }
 }
