@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.TryGetComponent(out ITriggerObject triggerObject))
             {
                 triggerObject.OnHit();
+                _shotHistory.DrawHistory();
                 return;
             }
 

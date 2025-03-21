@@ -425,7 +425,7 @@ MonoBehaviour:
   player: {fileID: 1412497138}
   aimCursor: {fileID: 1820193925}
   aimLine: {fileID: 4866765634854555418}
-  lineWidth: 0.3
+  lineWidth: 0.2
 --- !u!1 &700991956
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,7 +1334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorState: 2
+  colorState: 6
 --- !u!1 &1602082328
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,7 +1430,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.59171915, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
