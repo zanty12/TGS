@@ -92,6 +92,6 @@ public class PlayerSpawn : MonoBehaviour
         }
 
         player.UpdateRayCast(transform.position,
-            ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+            ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized, PlayerController.reflectMax);
     }
 }

@@ -5,12 +5,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Serialization;
+using static ColorState;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] protected ColorState colorState = ColorState.White;
+    [SerializeField] public COLORSTATE colorState = COLORSTATE.White;
     private ShotHistory _shotHistory;
 
+    [SerializeField] public static readonly int reflectMax = 3;
 
     private void Start()
     {
@@ -20,12 +22,18 @@ public class PlayerController : MonoBehaviour
         _shotHistory.SetLineColor(StateToColor(colorState));
     }
 
-    public void UpdateRayCast(Vector2 startPos, Vector2 direction)
+    public void UpdateRayCast(Vector2 startPos, Vector2 direction, int reflect)
     {
         //keep circle casting until circle cast hit a kill object
         //reflect circle cast along normal of the hit object
         //if circle cast hit a wall, reflect circle cast along normal of the hit wall
         //if circle cast hit a kill object, destroy the object and stop circle casting
+        if (reflect < 0)
+        {
+            _shotHistory.DrawHistory();
+            return;
+        }
+
         RaycastHit2D hit = Physics2D.Raycast(startPos, direction, Mathf.Infinity, LayerMask.GetMask("Wall"));
         if (hit)
         {
@@ -39,14 +47,14 @@ public class PlayerController : MonoBehaviour
             //if hit object inherits ITriggerObject, call the trigger method
             if (hit.collider.TryGetComponent(out ITriggerObject triggerObject))
             {
-                triggerObject.OnHit();
+                triggerObject.OnHit(this);
                 _shotHistory.DrawHistory();
                 return;
             }
 
             //Destroy(hit.collider.gameObject);
             Vector2 newPos = hit.point + hit.normal * 0.5f;
-            UpdateRayCast(newPos, Vector2.Reflect(direction, hit.normal));
+            UpdateRayCast(newPos, Vector2.Reflect(direction, hit.normal), reflect - 1);
         }
     }
 
@@ -56,63 +64,9 @@ public class PlayerController : MonoBehaviour
         _shotHistory.AddPoint(transform.position);
     }
 
-    public void SetColor(ColorState color)
+    public void SetColor(COLORSTATE color)
     {
         colorState = color;
         _shotHistory.SetLineColor(StateToColor(colorState));
-    }
-
-    public enum ColorState
-    {
-        Red,
-        Green,
-        Blue,
-        Yellow,
-        Magenta,
-        Cyan,
-        White,
-    }
-
-    private ColorState MergeColors(ColorState color1, ColorState color2)
-    {
-        if (color1 == color2)
-        {
-            return color1;
-        }
-
-        if (color1 == ColorState.Red && color2 == ColorState.Blue ||
-            color1 == ColorState.Blue && color2 == ColorState.Red)
-        {
-            return ColorState.Magenta;
-        }
-
-        if (color1 == ColorState.Red && color2 == ColorState.Green ||
-            color1 == ColorState.Green && color2 == ColorState.Red)
-        {
-            return ColorState.Yellow;
-        }
-
-        if (color1 == ColorState.Blue && color2 == ColorState.Green ||
-            color1 == ColorState.Green && color2 == ColorState.Blue)
-        {
-            return ColorState.Cyan;
-        }
-
-        return ColorState.White;
-    }
-
-    private Color StateToColor(ColorState colorState)
-    {
-        return colorState switch
-        {
-            ColorState.Red => UnityEngine.Color.red,
-            ColorState.Green => UnityEngine.Color.green,
-            ColorState.Blue => UnityEngine.Color.blue,
-            ColorState.Yellow => UnityEngine.Color.yellow,
-            ColorState.Magenta => UnityEngine.Color.magenta,
-            ColorState.Cyan => UnityEngine.Color.cyan,
-            ColorState.White => UnityEngine.Color.white,
-            _ => throw new ArgumentOutOfRangeException()
-        };
     }
 }
