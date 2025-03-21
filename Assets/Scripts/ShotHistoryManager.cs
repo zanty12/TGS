@@ -28,8 +28,9 @@ public class ShotHistoryManager : MonoBehaviour
     public ShotHistory CreateShotHistory()
     {
         GameObject shotHistory = Instantiate(shotHistoryPrefab, transform);
-        _shotHistory.Add(shotHistory.GetComponent<ShotHistory>());
-        return shotHistory.GetComponent<ShotHistory>();
+        ShotHistory shotHistoryComponent = shotHistory.GetComponent<ShotHistory>();
+        _shotHistory.Add(shotHistoryComponent);
+        return shotHistoryComponent;
     }
 
     public void ClearShotHistory()

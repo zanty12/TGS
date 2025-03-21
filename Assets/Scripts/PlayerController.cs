@@ -6,62 +6,66 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Serialization;
 
-[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(CircleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
     protected ColorState colorState = ColorState.White;
     private ShotHistory _shotHistory;
 
-    private SpriteRenderer _spriteRenderer;
+    public ReactiveProperty<bool> isAlive = new ReactiveProperty<bool>(true);
+
     private void Start()
     {
-        PlayerSpawn.Instance.PlayersAlive.Value += 1;
         _shotHistory = ShotHistoryManager.Instance.CreateShotHistory();
         _shotHistory.AddPoint(transform.position);
+        _shotHistory.gameObject.SetActive(true);
 
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _spriteRenderer.color = StateToColor(colorState);
+        isAlive.Subscribe(x =>
+        {
+            if (!x)
+            {
+                Reset();
+            }
+        });
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    public void UpdateRayCast(Vector2 startPos, Vector2 direction)
     {
-        _shotHistory.AddPoint(other.contacts[0].point);
-        //if other has tag kill, destroy self
-        if (other.gameObject.CompareTag("Kill"))
+        //keep circle casting until circle cast hit a kill object
+        //reflect circle cast along normal of the hit object
+        //if circle cast hit a wall, reflect circle cast along normal of the hit wall
+        //if circle cast hit a kill object, destroy the object and stop circle casting
+        RaycastHit2D hit = Physics2D.Raycast(startPos, direction, Mathf.Infinity, LayerMask.GetMask("Wall"));
+        if (hit)
         {
-            Destroy(gameObject);
+            _shotHistory.AddPoint(hit.point);
+            if (hit.collider.CompareTag("Kill"))
+            {
+                _shotHistory.DrawHistory();
+                isAlive.Value = false;
+                return;
+            }
+
+            //Destroy(hit.collider.gameObject);
+            Vector2 newPos = hit.point + hit.normal * 0.5f;
+            UpdateRayCast(newPos, Vector2.Reflect(direction, hit.normal));
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void Reset()
     {
+        PlayerSpawn.Instance.Reset();
+        isAlive.Value = true;
+    }
+
+    public void ClearHistory()
+    {
+        _shotHistory.ClearHistory();
         _shotHistory.AddPoint(transform.position);
-        if (other.gameObject.CompareTag("Finish"))
-        {
-            Debug.Log("You Win!");
-        }
-
-        if (other.gameObject.CompareTag("Player"))
-        {
-            //merge colors
-            var otherPlayer = other.gameObject.GetComponent<PlayerController>();
-            colorState = MergeColors(colorState, otherPlayer.colorState);
-            // destroy the younger player
-            Destroy(otherPlayer.gameObject.GetInstanceID() < gameObject.GetInstanceID()
-                ? gameObject
-                : other.gameObject);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        PlayerSpawn.Instance.PlayersAlive.Value -= 1;
     }
 
     public void SetColor(ColorState color)
     {
         colorState = color;
-        _spriteRenderer.color = StateToColor(colorState);
     }
 
     public enum ColorState
@@ -81,20 +85,28 @@ public class PlayerController : MonoBehaviour
         {
             return color1;
         }
-        if (color1 == ColorState.Red && color2 == ColorState.Blue || color1 == ColorState.Blue && color2 == ColorState.Red)
+
+        if (color1 == ColorState.Red && color2 == ColorState.Blue ||
+            color1 == ColorState.Blue && color2 == ColorState.Red)
         {
             return ColorState.Magenta;
         }
-        if (color1 == ColorState.Red && color2 == ColorState.Green || color1 == ColorState.Green && color2 == ColorState.Red)
+
+        if (color1 == ColorState.Red && color2 == ColorState.Green ||
+            color1 == ColorState.Green && color2 == ColorState.Red)
         {
             return ColorState.Yellow;
         }
-        if (color1 == ColorState.Blue && color2 == ColorState.Green || color1 == ColorState.Green && color2 == ColorState.Blue)
+
+        if (color1 == ColorState.Blue && color2 == ColorState.Green ||
+            color1 == ColorState.Green && color2 == ColorState.Blue)
         {
             return ColorState.Cyan;
         }
+
         return ColorState.White;
     }
+
     private Color StateToColor(ColorState colorState)
     {
         return colorState switch
