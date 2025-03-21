@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     protected ColorState colorState = ColorState.White;
     private ShotHistory _shotHistory;
 
-    public ReactiveProperty<bool> isAlive = new ReactiveProperty<bool>(true);
 
     private void Start()
     {
@@ -19,13 +18,6 @@ public class PlayerController : MonoBehaviour
         _shotHistory.AddPoint(transform.position);
         _shotHistory.gameObject.SetActive(true);
 
-        isAlive.Subscribe(x =>
-        {
-            if (!x)
-            {
-                Reset();
-            }
-        });
     }
 
     public void UpdateRayCast(Vector2 startPos, Vector2 direction)
@@ -41,20 +33,19 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.CompareTag("Kill"))
             {
                 _shotHistory.DrawHistory();
-                isAlive.Value = false;
                 return;
+            }
+
+            //if hit object inherits ITriggerObject, call the trigger method
+            if (hit.collider.TryGetComponent(out ITriggerObject triggerObject))
+            {
+                triggerObject.OnHit();
             }
 
             //Destroy(hit.collider.gameObject);
             Vector2 newPos = hit.point + hit.normal * 0.5f;
             UpdateRayCast(newPos, Vector2.Reflect(direction, hit.normal));
         }
-    }
-
-    private void Reset()
-    {
-        PlayerSpawn.Instance.Reset();
-        isAlive.Value = true;
     }
 
     public void ClearHistory()
