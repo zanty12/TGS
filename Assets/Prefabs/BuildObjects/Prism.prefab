@@ -158,6 +158,7 @@ MonoBehaviour:
   launchPoint2: {fileID: 6477642384777538587}
   launchPoint3: {fileID: 5945871877673902275}
   playerPrefab: {fileID: 8955971251824042777, guid: bd7d022a82c5d054e8e1ca5877433d31, type: 3}
+  hitEffect: {fileID: 4990679855544145403, guid: 6f9545741c9e19a42afd861ab1396a4a, type: 3}
 --- !u!1 &2563868947461074171
 GameObject:
   m_ObjectHideFlags: 0

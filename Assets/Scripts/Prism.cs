@@ -7,6 +7,7 @@ public class Prism : MonoBehaviour, ITriggerObject
     [SerializeField] private Transform launchPoint2;
     [SerializeField] private Transform launchPoint3;
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject hitEffect;
 
     private PlayerController player1;
     private PlayerController player2;
@@ -25,9 +26,9 @@ public class Prism : MonoBehaviour, ITriggerObject
         player2.SetColor(COLORSTATE.Green);
         player3.SetColor(COLORSTATE.Blue);
 
-        player1.UpdateRayCast(launchPoint1.position, launchPoint1.up, PlayerController.reflectMax);
-        player2.UpdateRayCast(launchPoint2.position, launchPoint2.up, PlayerController.reflectMax);
-        player3.UpdateRayCast(launchPoint3.position, launchPoint3.up, PlayerController.reflectMax);
+        player1.UpdateRayCast(launchPoint1.position, launchPoint1.up, PlayerController.reflectMax, hitEffect);
+        player2.UpdateRayCast(launchPoint2.position, launchPoint2.up, PlayerController.reflectMax, hitEffect);
+        player3.UpdateRayCast(launchPoint3.position, launchPoint3.up, PlayerController.reflectMax, hitEffect);
     }
 
     public void Reset()

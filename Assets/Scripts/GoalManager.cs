@@ -1,12 +1,14 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System.Linq;
+using UniRx;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class GoalManager : MonoBehaviour
 {
-    [ShowInInspector] private List<Goal> goalList = new List<Goal>();
-    bool clear;
+    [SerializeField] private List<Goal> goalList;
+    public ReactiveProperty<bool> isClear = new ReactiveProperty<bool>(false);
     private void Awake()
     {
         foreach (var slot in goalList)
@@ -15,9 +17,15 @@ public class GoalManager : MonoBehaviour
             {
                 if (goalList.TrueForAll(s => s.isGoal.Value))
                 {
-                    isCompleted_.Value = true;
+                    isClear.Value = true;
                 }
             });
         }
+    }
+
+    [Button("ScanGoal")]
+    private void ScanGoal()
+    {
+        goalList = new List<Goal>(FindObjectsByType<Goal>(FindObjectsSortMode.None));
     }
 }

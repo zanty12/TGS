@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
         _shotHistory.SetLineColor(StateToColor(colorState));
     }
 
-    public void UpdateRayCast(Vector2 startPos, Vector2 direction, int reflect)
+    public void UpdateRayCast(Vector2 startPos, Vector2 direction, int reflect, GameObject hitEffect)
     {
         //keep circle casting until circle cast hit a kill object
         //reflect circle cast along normal of the hit object
@@ -51,10 +51,12 @@ public class PlayerController : MonoBehaviour
                 _shotHistory.DrawHistory();
                 return;
             }
+            hitEffect.GetComponent<SpriteRenderer>().color = StateToColor(colorState);
+            Instantiate(hitEffect, hit.point, Quaternion.identity);
 
             //Destroy(hit.collider.gameObject);
             Vector2 newPos = hit.point + hit.normal * 0.5f;
-            UpdateRayCast(newPos, Vector2.Reflect(direction, hit.normal), reflect - 1);
+            UpdateRayCast(newPos, Vector2.Reflect(direction, hit.normal), reflect - 1, hitEffect);
         }
     }
 
