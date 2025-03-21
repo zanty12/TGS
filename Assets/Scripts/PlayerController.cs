@@ -9,8 +9,8 @@ using UnityEngine.Serialization;
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(CircleCollider2D))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] protected ColorState colorState = ColorState.White;
-    [SerializeField] private ShotHistory _shotHistory;
+    protected ColorState colorState = ColorState.White;
+    private ShotHistory _shotHistory;
 
     private SpriteRenderer _spriteRenderer;
     private void Start()
@@ -58,7 +58,13 @@ public class PlayerController : MonoBehaviour
         PlayerSpawn.Instance.PlayersAlive.Value -= 1;
     }
 
-    protected enum ColorState
+    public void SetColor(ColorState color)
+    {
+        colorState = color;
+        _spriteRenderer.color = StateToColor(colorState);
+    }
+
+    public enum ColorState
     {
         Red,
         Green,
@@ -69,7 +75,7 @@ public class PlayerController : MonoBehaviour
         White,
     }
 
-    protected ColorState MergeColors(ColorState color1, ColorState color2)
+    private ColorState MergeColors(ColorState color1, ColorState color2)
     {
         if (color1 == color2)
         {
@@ -89,7 +95,7 @@ public class PlayerController : MonoBehaviour
         }
         return ColorState.White;
     }
-    protected Color StateToColor(ColorState colorState)
+    private Color StateToColor(ColorState colorState)
     {
         return colorState switch
         {
