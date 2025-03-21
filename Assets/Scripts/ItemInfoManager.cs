@@ -7,17 +7,19 @@ public class ItemInfoManager : MonoBehaviour
     [SerializeField] GameObject image;
     [SerializeField] GameObject num;
 
+    [SerializeField] ItemData itemData;
+
+    public int memberNum;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        SetItemName("Mirror");
-        SetItemNum(5);
+        SetItemName(itemData.itemList[memberNum].itemName);
+        SetItemNum(itemData.itemList[memberNum].itemNum);
     }
-
 
     public void SetItemName(string ItemName)
     {//アイテム名セット
-        //name = transform.Find("ItemName").gameObject;
         name.GetComponent<Text>().text = ItemName;
     }
 

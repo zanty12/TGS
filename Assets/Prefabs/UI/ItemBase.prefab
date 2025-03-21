@@ -410,3 +410,5 @@ MonoBehaviour:
   name: {fileID: 4919767603916913578}
   image: {fileID: 1401624885834530795}
   num: {fileID: 3041344408429826723}
+  itemData: {fileID: 11400000, guid: 5f446011fdc227e4798a79d0bd685fce, type: 2}
+  memberNum: 0
