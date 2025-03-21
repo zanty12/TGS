@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UniRx;
 using UnityEngine;
@@ -83,21 +84,14 @@ public class PlayerSpawn : MonoBehaviour
     private void Shoot()
     {
         player.ClearHistory();
+        //clear history on all ITriggerObject
+        foreach (var triggerObject in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+                     .OfType<ITriggerObject>())
+        {
+            triggerObject.Reset();
+        }
+
         player.UpdateRayCast(transform.position,
             ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
-
-        /*//発射したら予測線とカーソルを消す
-        aimCursor.enabled = false;
-        aimLine.enabled = false;*/
-
     }
-
-    public void Reset()
-    {
-        aimCursor.enabled = true;
-        aimLine.enabled = true;
-
-    }
-
-
 }
