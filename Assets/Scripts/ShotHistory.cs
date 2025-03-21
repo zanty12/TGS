@@ -35,4 +35,10 @@ public class ShotHistory : MonoBehaviour
         shotHistory.Clear();
         _lineRenderer.positionCount = 0;
     }
+
+    public void SetLineColor(Color color)
+    {
+        _lineRenderer.startColor = color;
+        _lineRenderer.endColor = color;
+    }
 }
