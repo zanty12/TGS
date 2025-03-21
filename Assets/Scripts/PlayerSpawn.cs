@@ -26,6 +26,8 @@ public class PlayerSpawn : MonoBehaviour
     [SerializeField, Range(0.1f, 0.3f), BoxGroup("数値")]
     private float lineWidth = 0.3f; //予測線の太さ
 
+    [Required, SerializeField, BoxGroup("参照")]
+    private GameObject hitEffect;
 
     private void Awake()
     {
@@ -92,6 +94,6 @@ public class PlayerSpawn : MonoBehaviour
         }
 
         player.UpdateRayCast(transform.position,
-            ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized);
+            ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) - (Vector2)transform.position).normalized, PlayerController.reflectMax, hitEffect);
     }
 }

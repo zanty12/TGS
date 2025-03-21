@@ -158,6 +158,7 @@ MonoBehaviour:
   launchPoint2: {fileID: 6477642384777538587}
   launchPoint3: {fileID: 5945871877673902275}
   playerPrefab: {fileID: 8955971251824042777, guid: bd7d022a82c5d054e8e1ca5877433d31, type: 3}
+  hitEffect: {fileID: 4990679855544145403, guid: 6f9545741c9e19a42afd861ab1396a4a, type: 3}
 --- !u!1 &2563868947461074171
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,6 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorState: 2
 --- !u!1 &3796317045079107016
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorState: 0
 --- !u!1 &8306500727788677347
 GameObject:
   m_ObjectHideFlags: 0
@@ -290,3 +293,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorState: 1
