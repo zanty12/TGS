@@ -14,10 +14,19 @@ public class BuildManager : MonoBehaviour
 
     private Image _objectCursor;
 
+    public static BuildManager Instance { get; private set; }
+
 
     void Awake()
     {
-        //set the first object active
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
 
         _camera = Camera.main;
 
