@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
-    protected ColorState colorState = ColorState.White;
+    [SerializeField] protected ColorState colorState = ColorState.White;
     private ShotHistory _shotHistory;
 
 
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
         _shotHistory = ShotHistoryManager.Instance.CreateShotHistory();
         _shotHistory.AddPoint(transform.position);
         _shotHistory.gameObject.SetActive(true);
-
+        _shotHistory.SetLineColor(StateToColor(colorState));
     }
 
     public void UpdateRayCast(Vector2 startPos, Vector2 direction)
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.TryGetComponent(out ITriggerObject triggerObject))
             {
                 triggerObject.OnHit();
+                return;
             }
 
             //Destroy(hit.collider.gameObject);
@@ -57,6 +58,7 @@ public class PlayerController : MonoBehaviour
     public void SetColor(ColorState color)
     {
         colorState = color;
+        _shotHistory.SetLineColor(StateToColor(colorState));
     }
 
     public enum ColorState
