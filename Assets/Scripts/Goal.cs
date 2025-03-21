@@ -11,4 +11,8 @@ public class Goal : MonoBehaviour, ITriggerObject
     public void OnHit()
     {
     }
+
+    public void Reset()
+    {
+    }
 }
