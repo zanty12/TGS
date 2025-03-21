@@ -1,27 +1,25 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Prism : MonoBehaviour
+public class Prism : MonoBehaviour, ITriggerObject
 {
     [SerializeField] private Transform launchPoint1;
     [SerializeField] private Transform launchPoint2;
     [SerializeField] private Transform launchPoint3;
     [SerializeField] private GameObject playerPrefab;
-    private void OnTriggerEnter2D(Collider2D other)
+   
+    public void OnHit()
     {
-        Destroy(other.gameObject);
+        PlayerController player1 = launchPoint1.GetComponent<PlayerController>();
+        PlayerController player2 = launchPoint2.GetComponent<PlayerController>();
+        PlayerController player3 = launchPoint3.GetComponent<PlayerController>();
 
-        var player1Rb = Instantiate(playerPrefab, launchPoint1.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-        var player2Rb = Instantiate(playerPrefab, launchPoint2.position, Quaternion.identity).GetComponent<Rigidbody2D>();
-        var player3Rb = Instantiate(playerPrefab, launchPoint3.position, Quaternion.identity).GetComponent<Rigidbody2D>();
+        player1.SetColor(PlayerController.ColorState.Red);
+        player2.SetColor(PlayerController.ColorState.Green);
+        player3.SetColor(PlayerController.ColorState.Blue);
 
-        
-
-        // shoot the players along the y-axis of the launch points
-        player1Rb.linearVelocity = launchPoint1.up * 20;
-        player2Rb.linearVelocity = launchPoint2.up * 20;
-        player3Rb.linearVelocity = launchPoint3.up * 20;
-
-        Destroy(this.gameObject);
+        player1.UpdateRayCast(launchPoint1.position, launchPoint1.up);
+        player2.UpdateRayCast(launchPoint2.position, launchPoint2.up);
+        player3.UpdateRayCast(launchPoint3.position, launchPoint3.up);
     }
 }

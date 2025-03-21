@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2513206332429320890}
   - component: {fileID: 8890244599550711567}
   - component: {fileID: 9067736122133917543}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Prism
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,7 +167,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5945871877673902275}
-  m_Layer: 0
+  - component: {fileID: 5349644806296414569}
+  m_Layer: 6
   m_Name: launch3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,6 +190,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2898632070102714630}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120}
+--- !u!114 &5349644806296414569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2563868947461074171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3796317045079107016
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +211,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6570337693685069127}
-  m_Layer: 0
+  - component: {fileID: 6780811763007354710}
+  m_Layer: 6
   m_Name: launch1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,6 +234,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2898632070102714630}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6780811763007354710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3796317045079107016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8306500727788677347
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,7 +255,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6477642384777538587}
-  m_Layer: 0
+  - component: {fileID: 6135138260285200824}
+  m_Layer: 6
   m_Name: launch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,3 +278,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2898632070102714630}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 120}
+--- !u!114 &6135138260285200824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8306500727788677347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 834a43d6c88d9934190bec3eb7f0b33b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
